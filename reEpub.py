@@ -2,6 +2,7 @@ import os, os.path
 import zipfile
 import sys
 import time
+import re
 from PyQt4 import QtCore,QtGui
 from mainUi import Ui_MainWindow
 
@@ -56,6 +57,9 @@ class Main(QtGui.QMainWindow):
             else:
                 self.targetproceses = self.targetproceses - 1
                 self.update_progress(os.path.basename(directory)+": overwriting EPUB file")
+        else:
+            self.targetproceses = self.targetproceses - 1
+            self.update_progress(os.path.basename(directory)+": overwriting EPUB file")
         new_epub = zipfile.ZipFile(os.path.join(rootdir,(directory+".epub")),"w")
         
         self.update_progress(os.path.basename(directory)+": adding mimetype")
@@ -67,19 +71,17 @@ class Main(QtGui.QMainWindow):
                 if not new_target == "mimetype":
                     #print "writing "+new_target+" to "+directory+".epub"
                     self.update_progress(os.path.basename(directory)+": adding "+new_target +" to EPUB")
-                    new_epub.write(target,new_target)
+                    new_epub.write(target,new_target, zipfile.ZIP_DEFLATED)
         
         self.update_progress(os.path.basename(directory)+": Done")
         new_epub.close()
         
     def dropEvent(self, e):
-        #self.ui.labelProgress.setText(e.mimeData().text())
         for indrag in e.mimeData().urls():
-            target = str(indrag.path())
+            target = str(indrag.toLocalFile())
             rootdir = os.path.dirname(os.path.realpath(target))
             if os.path.exists(target):
                 self.reassemble(target, rootdir)
-        #print e.mimeData().urls()
 
 def main():
     app = QtGui.QApplication(sys.argv)
@@ -96,12 +98,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-        
-    
-    
-
