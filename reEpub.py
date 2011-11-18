@@ -79,8 +79,14 @@ class Main(QtGui.QMainWindow):
     def dropEvent(self, e):
         for indrag in e.mimeData().urls():
             target = str(indrag.toLocalFile())
+            if target[len(target)-1] == "/":
+                target = target[:len(target)-1]
             rootdir = os.path.dirname(os.path.realpath(target))
+            #print indrag
+            #print target
+            #print rootdir
             if os.path.exists(target):
+                #print "bungholio"
                 self.reassemble(target, rootdir)
 
 def main():

@@ -8,14 +8,16 @@ Requirements
 ------------
 
 python 2.7+
+qt4
+pyqt
 
 Running
 -------
 
 python:
-    python reEpub.py path/to/your/extracted/folder
+python reEpub.py path/to/your/extracted/folder
   
 windows:
-    reEpub.exe path/to/your/extracted/folder
+reEpub.exe path/to/your/extracted/folder
   
   

@@ -20,7 +20,7 @@
    <bool>true</bool>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>reEpub</string>
   </property>
   <property name="windowIcon">
    <iconset resource="res.qrc">
