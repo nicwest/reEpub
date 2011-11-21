@@ -13,14 +13,26 @@ class Main(QtGui.QMainWindow):
         self.ui.setupUi(self)
         self.setAcceptDrops(True)
         self.targetproceses = 0
-        self.currentprocess = 0 
+        self.currentprocess = 0
+        
+        #filenames to ignore
+        self.ignorelist = ["Thumbs.db",
+                           ".dsstore",
+                           "mimetype"]
     
     def dragEnterEvent(self, e):
         if e.mimeData().hasUrls:
             e.accept()
         else:
             e.ignore()
-            
+    
+    def test_for_ignore(self, filename):
+        for ignorefile in self.ignorelist:
+            #print filename
+            if ignorefile.lower() == filename.lower():
+                return False
+        return True
+    
     def get_file_count(self, directory):
         counter = 0
         for subdir, dirs, files in os.walk(directory, False):
@@ -68,7 +80,7 @@ class Main(QtGui.QMainWindow):
             for name in files:
                 target = os.path.join(subdir, name)
                 new_target = target[len(os.path.join(directory,"")):]
-                if not new_target == "mimetype":
+                if self.test_for_ignore(name):
                     #print "writing "+new_target+" to "+directory+".epub"
                     self.update_progress(os.path.basename(directory)+": adding "+new_target +" to EPUB")
                     new_epub.write(target,new_target, zipfile.ZIP_DEFLATED)
